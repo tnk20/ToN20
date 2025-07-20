@@ -3,72 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>YouTube Music Search (Private)</title>
-  <style>
-    body {
-      background: #111;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    input, button {
-      padding: 10px;
-      margin: 5px;
-      border-radius: 5px;
-    }
-    .result {
-      background: #222;
-      margin: 10px auto;
-      padding: 10px;
-      border-radius: 10px;
-      width: 300px;
-    }
-    iframe {
-      display: none;
-    }
-  </style>
+  <title>Beranda | Motivasi & Jam</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h2>🔎 Cari Musik YouTube (Private)</h2>
-  <input type="text" id="searchBox" placeholder="Judul Lagu">
-  <button onclick="searchMusic()">Cari</button>
+  <nav>
+    <a href="index.html">🏠 Beranda</a> | 
+    <a href="music.html">🎵 Musik</a>
+  </nav>
 
-  <div id="results"></div>
+  <div class="glass">
+    <h1 id="clock">00:00:00</h1>
+    <div id="date">Tanggal</div>
+    <div>Waktu Indonesia Barat (WIB)</div>
+  </div>
 
-  <div id="playerArea"></div>
+  <div class="glass">
+    <b>💬 Motivasi</b>
+    <div id="quote">"Motivasi akan tampil di sini"</div>
+  </div>
 
-  <script>
-    const proxyURL = 'https://script.google.com/macros/s/AKfycbxvekRQgTKlQH0dE2H65NS2kiq87XBlWJeyh6sjBpYlFwCRHCig9fDzJZNVPvOhFP8Yow/exec';
+  <div class="glass">
+    <button onclick="toggleMusic()">🎵 Play/Pause Musik</button><br>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" onchange="setVolume()">
+  </div>
 
-    function searchMusic() {
-      const query = document.getElementById('searchBox').value;
-      fetch(`${proxyURL}?q=${encodeURIComponent(query)}`)
-      .then(res => res.json())
-      .then(data => {
-        const resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = '';
-        data.items.forEach(item => {
-          const div = document.createElement('div');
-          div.className = 'result';
-          div.innerHTML = `
-            <img src="${item.snippet.thumbnails.default.url}"><br>
-            <b>${item.snippet.title}</b><br>
-            <button onclick="playMusic('${item.id.videoId}')">▶️ Putar</button>
-          `;
-          resultsDiv.appendChild(div);
-        });
-      });
-    }
+  <audio id="bgm" loop autoplay>
+    <source src="musik.mp3" type="audio/mp3">
+  </audio>
 
-    function playMusic(videoId) {
-      const player = document.getElementById('playerArea');
-      player.innerHTML = `
-        <iframe width="0" height="0" src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay"></iframe>
-      `;
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
