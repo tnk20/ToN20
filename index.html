@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Music Search (Private)</title>
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+    }
+    .result {
+      background: #222;
+      margin: 10px auto;
+      padding: 10px;
+      border-radius: 10px;
+      width: 300px;
+    }
+    iframe {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🔎 Cari Musik YouTube (Private)</h2>
+  <input type="text" id="searchBox" placeholder="Judul Lagu">
+  <button onclick="searchMusic()">Cari</button>
+
+  <div id="results"></div>
+
+  <div id="playerArea"></div>
+
+  <script>
+    const proxyURL = 'https://script.google.com/macros/s/AKfycbxvekRQgTKlQH0dE2H65NS2kiq87XBlWJeyh6sjBpYlFwCRHCig9fDzJZNVPvOhFP8Yow/exec';
+
+    function searchMusic() {
+      const query = document.getElementById('searchBox').value;
+      fetch(`${proxyURL}?q=${encodeURIComponent(query)}`)
+      .then(res => res.json())
+      .then(data => {
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = '';
+        data.items.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'result';
+          div.innerHTML = `
+            <img src="${item.snippet.thumbnails.default.url}"><br>
+            <b>${item.snippet.title}</b><br>
+            <button onclick="playMusic('${item.id.videoId}')">▶️ Putar</button>
+          `;
+          resultsDiv.appendChild(div);
+        });
+      });
+    }
+
+    function playMusic(videoId) {
+      const player = document.getElementById('playerArea');
+      player.innerHTML = `
+        <iframe width="0" height="0" src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay"></iframe>
+      `;
+    }
+  </script>
+
+</body>
+</html>
