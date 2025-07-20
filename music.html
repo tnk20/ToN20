@@ -3,15 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>🎵 Musik | Pilih & Putar</title>
+  <title>🎵 Musik | Rekomendasi & Player</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #121212;
-      color: white;
-      margin-bottom: 100px;
-    }
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: url('background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  min-height: 100vh;
+}
 
     nav {
       background: #1f1f1f;
@@ -100,6 +102,7 @@
       justify-content: space-between;
       padding: 10px;
       box-shadow: 0 -2px 5px #000;
+      z-index: 999;
     }
 
     .player-info {
@@ -139,12 +142,14 @@
     <a href="music.html">🎵 Musik</a>
   </nav>
 
-  <h1>🎵 Pilih Lagu Favoritmu</h1>
+  <h1>🎶 Rekomendasi Musik Populer</h1>
 
   <div class="search-bar">
-    <input type="text" id="searchBox" placeholder="Cari Lagu...">
-    <button onclick="searchMusic()">🔍 Cari</button>
-  </div>
+  <input type="text" id="searchBox" placeholder="Cari Lagu...">
+  <button onclick="searchMusic()">🔍 Cari</button>
+  <button onclick="refreshRecommendations()">🔄 Acak</button>
+</div>
+
 
   <div class="grid" id="results"></div>
 
@@ -164,13 +169,26 @@
   <iframe id="ytPlayer" allow="autoplay" allowfullscreen></iframe>
 
   <script>
-    const apiURL = 'https://script.google.com/macros/s/AKfycbwOx4Cyty1gbZrZIrEWXkL1L231kF153M-kfOiAytFC6RkaZGyJ2Xz0_5m4Cv9RNfAx/exec'; // Ganti dengan URL Apps Script kamu
+    const randomQuery = () => {
+      const keywords = [
+        'musik pop indonesia',
+        'lagu viral tiktok',
+        'lagu pop tahun 2000an',
+        'lagu barat populer',
+        'lagu galau indo',
+        'musik hits indonesia',
+        'chart musik indonesia'
+      ];
+      return keywords[Math.floor(Math.random() * keywords.length)];
+    }
+
+    const apiURL = 'https://script.google.com/macros/s/AKfycbwOx4Cyty1gbZrZIrEWXkL1L231kF153M-kfOiAytFC6RkaZGyJ2Xz0_5m4Cv9RNfAx/exec'; // Ganti URL Apps Script kamu
     let playlist = [];
     let currentIndex = -1;
     let isPlaying = false;
 
     window.onload = function() {
-      fetch(apiURL)
+      fetch(`${apiURL}?q=${encodeURIComponent(randomQuery())}`)
       .then(res => res.json())
       .then(data => {
         showResults(data.items);
@@ -194,7 +212,7 @@
     function searchMusic() {
       const q = document.getElementById('searchBox').value;
       if (!q) return;
-      fetch(apiURL + '?q=' + encodeURIComponent(q))
+      fetch(`${apiURL}?q=${encodeURIComponent(q)}`)
       .then(res => res.json())
       .then(data => {
         showResults(data.items);
@@ -203,10 +221,6 @@
           title: item.snippet.title,
           thumb: item.snippet.thumbnails.medium.url
         }));
-        currentIndex = -1;
-        isPlaying = false;
-        document.getElementById('ytPlayer').src = '';
-        updateNowPlaying();
       });
     }
 
@@ -273,10 +287,20 @@
       player.postMessage(`{"event":"command","func":"setVolume","args":[${volume * 100}]}`, '*');
     }
 
-    function updateNowPlaying() {
-      document.getElementById('coverThumb').src = '';
-      document.getElementById('nowTitle').textContent = 'Tidak ada lagu diputar';
-    }
+    function refreshRecommendations() {
+  fetch(`${apiURL}?q=${encodeURIComponent(randomQuery())}`)
+  .then(res => res.json())
+  .then(data => {
+    showResults(data.items);
+    playlist = data.items.map(item => ({
+      id: item.id.videoId || item.id,
+      title: item.snippet.title,
+      thumb: item.snippet.thumbnails.medium.url
+    }));
+  });
+}
+
+
   </script>
 
 </body>
