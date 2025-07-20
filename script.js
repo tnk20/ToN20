@@ -1,32 +1,28 @@
 function updateClock() {
   const now = new Date();
-  document.getElementById('clock').textContent = now.toLocaleTimeString('id-ID', {hour12: false});
+  const clock = document.getElementById('clock');
+  const date = document.getElementById('date');
+
+  clock.textContent = now.toLocaleTimeString('id-ID');
+  date.textContent = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 }
+
 setInterval(updateClock, 1000);
 updateClock();
 
-document.getElementById('date').textContent = new Date().toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
-
 const quotes = [
-  "Masa depan cerah menanti mereka yang berusaha hari ini",
+   "Masa depan cerah menanti mereka yang berusaha hari ini",
   "Jangan menyerah sebelum mencoba",
   "Setiap hari adalah kesempatan baru",
   "Kesuksesan adalah hasil dari kerja keras",
   "Belajar dari kegagalan adalah awal dari kesuksesan"
 ];
-let qi = 0;
-function changeQuote() {
-  document.getElementById('quote').textContent = `"${quotes[qi]}"`;
-  qi = (qi + 1) % quotes.length;
-}
-setInterval(changeQuote, 5000);
-changeQuote();
 
-const bgm = document.getElementById('bgm');
-function toggleMusic() {
-  if (bgm.paused) bgm.play();
-  else bgm.pause();
+function updateQuote() {
+  const quote = document.getElementById('quote');
+  const random = Math.floor(Math.random() * quotes.length);
+  quote.textContent = quotes[random];
 }
-function setVolume() {
-  bgm.volume = document.getElementById('volume').value;
-}
+
+setInterval(updateQuote, 5000);
+updateQuote();
