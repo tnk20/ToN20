@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Musik | Cari Lagu YouTube</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">🏠 Beranda</a> | 
+    <a href="music.html">🎵 Musik</a>
+  </nav>
+
+  <h1>🔎 Cari Musik YouTube</h1>
+  <input type="text" id="searchBox" placeholder="Cari Lagu">
+  <button onclick="searchMusic()">Cari</button>
+
+  <div id="results"></div>
+
+  <h2>🎶 Playlist Saya</h2>
+  <div id="playlist"></div>
+
+  <div id="playerArea"></div>
+
+  <script>
+    const proxyURL = 'https://script.google.com/macros/s/AKfycbxvekRQgTKlQH0dE2H65NS2kiq87XBlWJeyh6sjBpYlFwCRHCig9fDzJZNVPvOhFP8Yow/exec';
+    let playlist = [];
+
+    function searchMusic() {
+      const query = document.getElementById('searchBox').value;
+      fetch(`${proxyURL}?q=${encodeURIComponent(query)}`)
+      .then(res => res.json())
+      .then(data => {
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = '';
+        data.items.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'result';
+          div.innerHTML = `
+            <img src="${item.snippet.thumbnails.medium.url}" style="border-radius:10px;"><br>
+            <b>${item.snippet.title}</b><br>
+            <button onclick="playMusic('${item.id.videoId}')">▶️ Putar</button>
+            <button onclick="addToPlaylist('${item.id.videoId}', '${item.snippet.title.replace(/'/g,"\\'")}')">➕ Tambah ke Playlist</button>
+          `;
+          resultsDiv.appendChild(div);
+        });
+      });
+    }
+
+    function playMusic(videoId) {
+      const player = document.getElementById('playerArea');
+      player.innerHTML = `
+        <iframe width="300" height="169" src="https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1" allow="autoplay"></iframe>
+      `;
+    }
+
+    function addToPlaylist(videoId, title) {
+      playlist.push({ videoId, title });
+      updatePlaylist();
+    }
+
+    function updatePlaylist() {
+      const playlistDiv = document.getElementById('playlist');
+      playlistDiv.innerHTML = '';
+      playlist.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'playlist-item';
+        div.innerHTML = `
+          <span>${item.title}</span>
+          <div>
+            <button onclick="playMusic('${item.videoId}')">▶️</button>
+            <button onclick="removeFromPlaylist(${index})">❌</button>
+          </div>
+        `;
+        playlistDiv.appendChild(div);
+      });
+    }
+
+    function removeFromPlaylist(index) {
+      playlist.splice(index, 1);
+      updatePlaylist();
+    }
+  </script>
+
+</body>
+</html>
