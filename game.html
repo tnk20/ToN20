@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🎮 Galeri Game Retro</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    nav {
+      background: rgba(0,0,0,0.5);
+      padding: 10px;
+    }
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: rgba(255,255,255,0.2);
+    }
+    h1 {
+      margin: 20px 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      padding: 10px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .card {
+      background: #1f1f1f;
+      border-radius: 5px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    iframe {
+      width: 480px;
+      height: 432px;
+      border: none;
+      margin: 20px 0;
+      box-shadow: 0 0 10px #000;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">🏠 Beranda</a> | 
+    <a href="music.html">🎵 Musik</a> | 
+    <a href="game.html">🎮 Game</a>
+  </nav>
+
+  <h1>🎮 Galeri Game Retro</h1>
+
+  <div class="grid" id="gameGrid"></div>
+
+  <div id="gameArea"></div>
+
+  <script>
+    const allGames = [
+      { id: '44788-super-mario-advance-snes-color-restoration', title: 'Mario advance', img: 'https://i.987967.xyz/screenshot/43/2023/04/11/44788_23210c319337dab61d8e9c5e8881d2f6e2d61909.png' },
+      { id: '22909-samurai-shodown-usa', title: 'samurai showdon (snes)', img: 'https://i.987967.xyz/screenshot/79/q/22909_6afea3b0af37393b8d48448246ca18d2f11c76ac.png' },
+      { id: '23881-top-gear-usa', title: 'Top Gear (snes)', img: 'https://i.987967.xyz/screenshot/79/b/23881_2ee092593fc532584b30e9f49a69eec38f301c86.png' },
+      { id: '8843-jojos-bizarre-adventure%3A-heritage-for-the-future-jojo-no-kimyou-na-bouken%3A-mirai-e-no-isan-japan-990927-no-cd', title: 'JOJO BIZARRE ADVENTURE', img: 'https://i.987967.xyz/screenshot/19/2020/12/28/8843_660ca881b33a86ab9b3c21b5de5fbdcabaeca0cc.png' },
+      { id: '44444-super-mario-advance-4-super-mario-bros-3-usa-gbp-snes-palette-hack', title: 'Super Mario Advane 4 : Mario Bros 3', img: 'https://i.987967.xyz/screenshot/79/2022/11/21/43940_ed6fa6b4683daec50e4076c570e68281890f7ddb.png' },
+      
+    ];
+
+    const grid = document.getElementById('gameGrid');
+    allGames.forEach(game => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `<img src="${game.img}" alt="${game.title}"><b>${game.title}</b>`;
+      div.onclick = () => {
+        document.getElementById('gameArea').innerHTML = `<iframe src="https://www.retrogames.cc/embed/${game.id}.html" allowfullscreen></iframe>`;
+      };
+      grid.appendChild(div);
+    });
+  </script>
+
+</body>
+</html>
