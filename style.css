@@ -1,60 +1,53 @@
 body {
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: url('background.jpg') no-repeat center center fixed;
+  background-size: cover;
   color: white;
-  font-family: 'Poppins', sans-serif;
-  text-align: center;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
+
 nav {
-  margin-bottom: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  padding: 10px;
+  text-align: center;
 }
+
 nav a {
   color: white;
-  text-decoration: none;
   margin: 0 10px;
-  font-weight: bold;
+  text-decoration: none;
 }
-nav a:hover {
-  text-decoration: underline;
-}
+
 .glass {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  border-radius: 20px;
-  padding: 20px;
-  margin: 10px auto;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-  width: 300px;
-}
-input, button {
-  padding: 10px;
-  margin: 5px;
-  border-radius: 5px;
-  border: none;
-}
-button {
-  background: #ff6f61;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-button:hover {
-  background: #e55b50;
-}
-.result, .playlist-item {
   background: rgba(255, 255, 255, 0.1);
-  margin: 10px auto;
-  padding: 10px;
-  border-radius: 10px;
-  width: 300px;
-  transition: 0.3s;
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
 }
-.result:hover, .playlist-item:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.03);
+
+h1 {
+  font-size: 48px;
+  margin: 0;
 }
-iframe {
-  border: none;
-  border-radius: 10px;
-  margin-top: 20px;
+
+#date {
+  font-size: 18px;
+  margin-top: 10px;
+  border-bottom: 2px solid pink;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+#quote {
+  margin-top: 10px;
+  font-style: italic;
 }
