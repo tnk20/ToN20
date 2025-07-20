@@ -24,15 +24,38 @@
     <div id="quote">"Motivasi akan tampil di sini"</div>
   </div>
 
-  <div class="glass">
-    <button onclick="toggleMusic()">🎵 Play/Pause Musik</button><br>
-    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" onchange="setVolume()">
-  </div>
+  <h2>🎶 Rekomendasi Musik Populer</h2>
+  <div id="recommendations"></div>
 
-  <audio id="bgm" loop autoplay>
-    <source src="musik.mp3" type="audio/mp3">
-  </audio>
+  <div id="playerArea"></div>
 
   <script src="script.js"></script>
+
+  <script>
+    const trendingURL = 'AIzaSyABUyU93jN8Ru-gwiZZHHtlIS7pAvNRwhE'; // Ganti dengan URL Apps Script kamu
+
+    fetch(trendingURL)
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('recommendations');
+      data.items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'result';
+        div.innerHTML = `
+          <img src="${item.snippet.thumbnails.medium.url}" style="border-radius:10px;"><br>
+          <b>${item.snippet.title}</b><br>
+          <button onclick="playMusic('${item.id}')">▶️ Putar</button>
+        `;
+        container.appendChild(div);
+      });
+    });
+
+    function playMusic(videoId) {
+      document.getElementById('playerArea').innerHTML = `
+        <iframe width="300" height="169" src="https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1" allow="autoplay"></iframe>
+      `;
+    }
+  </script>
+
 </body>
 </html>
